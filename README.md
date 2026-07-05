@@ -35,4 +35,10 @@ An AI-powered risk-aware navigation system that recommends safer travel routes b
 - Implemented Depth First Search (DFS)
 - Added unit tests for graph traversal
 
+### ✅ Day 3
+- Implemented Priority Queue using heapq
+- Implemented Dijkstra's Algorithm
+- Reconstructed shortest path
+- Calculated minimum route distance
+
 🚧 Under Development

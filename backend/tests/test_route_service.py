@@ -16,4 +16,12 @@ route = service.get_shortest_route(
     "Police Station"
 )
 
-print(route)
+print("\nSafeRoute AI\n")
+
+print("Path:")
+
+print(route.path)
+
+print("\nDistance:")
+
+print(route.distance)

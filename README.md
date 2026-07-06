@@ -41,4 +41,17 @@ An AI-powered risk-aware navigation system that recommends safer travel routes b
 - Reconstructed shortest path
 - Calculated minimum route distance
 
+### ✅ Day 4
+- Created Route model
+- Added RouteService layer
+- Separated business logic from graph algorithms
+- Prepared backend architecture for FastAPI integration
+
+### ✅ Day 5
+- Added Location model
+- Added Road model
+- Introduced node IDs
+- Added latitude and longitude
+- Created city graph dataset
+
 🚧 Under Development

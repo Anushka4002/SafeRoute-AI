@@ -22,10 +22,11 @@ def shortest_path(graph, start, destination):
         if current_node == destination:
             break
 
-        for neighbor, weight in graph.get_neighbors(current_node).items():
+        for neighbor, road_data in graph.neighbors(current_node).items():
+
+            weight = road_data["distance"]
 
             distance = current_distance + weight
-
             if distance < distances[neighbor]:
 
                 distances[neighbor] = distance

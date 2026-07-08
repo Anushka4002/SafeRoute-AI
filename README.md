@@ -54,4 +54,19 @@ An AI-powered risk-aware navigation system that recommends safer travel routes b
 - Added latitude and longitude
 - Created city graph dataset
 
+## ✅ Day 6
+
+### Graph Refactor
+The graph architecture was upgraded from storing only edge distances to storing complete road metadata.
+Each road now contains:
+- Distance
+- Risk Score
+- Travel Time
+This prepares the project for:
+- AI-based safest route
+- Fastest route
+- Google Maps integration
+- OpenStreetMap integration
+- Crime and weather data
+
 🚧 Under Development

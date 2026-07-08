@@ -1,18 +1,50 @@
 from app.algorithms.graph import Graph
 from app.models.location import Location
 
-# Create graph object
 graph = Graph()
 
-# Add roads (edges)
-graph.add_edge(1, 2, 300)
-graph.add_edge(1, 3, 150)
-graph.add_edge(2, 4, 250)
-graph.add_edge(3, 4, 350)
-graph.add_edge(4, 5, 100)
+graph.add_edge(
+    1,
+    2,
+    distance=300,
+    risk=0.15,
+    travel_time=240
+)
 
-# Store locations
+graph.add_edge(
+    1,
+    3,
+    distance=150,
+    risk=0.45,
+    travel_time=120
+)
+
+graph.add_edge(
+    2,
+    4,
+    distance=250,
+    risk=0.25,
+    travel_time=200
+)
+
+graph.add_edge(
+    3,
+    4,
+    distance=350,
+    risk=0.60,
+    travel_time=260
+)
+
+graph.add_edge(
+    4,
+    5,
+    distance=100,
+    risk=0.05,
+    travel_time=90
+)
+
 locations = {
+
     1: Location(
         1,
         "College",

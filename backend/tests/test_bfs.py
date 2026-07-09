@@ -1,16 +1,9 @@
-from app.algorithms.graph import Graph
 from app.algorithms.bfs import bfs
+from app.data.city_graph import graph, locations
 
-graph = Graph()
+print("\n===== BFS Traversal =====\n")
 
-graph.add_edge("College", "Mall", 3)
-graph.add_edge("College", "Library", 2)
-graph.add_edge("Mall", "Hospital", 4)
-graph.add_edge("Library", "Hospital", 5)
-graph.add_edge("Hospital", "Police Station", 1)
+result = bfs(graph, 1)
 
-print("\nBFS Traversal\n")
-
-result = bfs(graph, "College")
-
-print(result)
+for node in result:
+    print(locations[node].name)

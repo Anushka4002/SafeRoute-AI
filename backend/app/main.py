@@ -1,52 +1,15 @@
-from app.data.city_graph import graph
-from app.data.city_graph import locations
+from fastapi import FastAPI
 
-from app.services.route_service import RouteService
+from app.api.routes import router
 
+app = FastAPI(
 
-def main():
+    title="SafeRoute AI",
 
-    service = RouteService(
-        graph,
-        locations
-    )
+    description="Accident Risk Route Advisor",
 
-    source = 1
-    destination = 5
+    version="1.0"
 
-    print("\n========== SAFE ROUTE AI ==========\n")
+)
 
-    print(f"Source      : {locations[source].name}")
-    print(f"Destination : {locations[destination].name}")
-
-    print("\n----- Dijkstra -----\n")
-
-    path, distance = service.shortest_route(
-        source,
-        destination
-    )
-
-    print("Path:")
-
-    for node in path:
-        print(f"→ {locations[node].name}")
-
-    print(f"\nDistance : {distance} meters")
-
-    print("\n----- A* Search -----\n")
-
-    path, distance = service.smart_route(
-        source,
-        destination
-    )
-
-    print("Path:")
-
-    for node in path:
-        print(f"→ {locations[node].name}")
-
-    print(f"\nDistance : {distance} meters")
-
-
-if __name__ == "__main__":
-    main()
+app.include_router(router)

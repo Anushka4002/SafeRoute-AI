@@ -4,21 +4,58 @@ An AI-powered risk-aware navigation system that recommends safer travel routes b
 
 ## Features (Planned)
 
-- Route Optimization
-- Risk Prediction
-- Safe Route Recommendation
-- Interactive Map
-- AI-based Risk Scoring
-- Real-time Route Analysis
+## Features
+
+- Graph Based Navigation
+- BFS
+- DFS
+- Dijkstra
+- A* Search
+- JSON Graph Loading
+- FastAPI Backend
+- Swagger Documentation
+- REST API
+
+## Folder Structure
+
+```text
+SafeRoute-AI
+│
+├── assets
+│
+├── backend
+│   ├── app
+│   │   ├── algorithms
+│   │   ├── data
+│   │   ├── models
+│   │   ├── services
+│   │   ├── utils
+│   │   └── main.py
+│   │
+│   └── tests
+│
+├── frontend
+├── datasets
+├── docs
+│
+├── README.md
+├── LICENSE
+└── .gitignore
+```
+
+## Tech Stack
 
 ## Tech Stack
 
 - Python
 - FastAPI
-- React
-- Google Maps API / OpenStreetMap
-- Scikit-learn
-- Pandas
+- Uvicorn
+- JSON
+- Graph Algorithms
+- Dijkstra
+- A*
+- OpenStreetMap (Upcoming)
+- React (Upcoming)
 
 ## Project Status
 
@@ -116,6 +153,11 @@ Algorithms (Dijkstra / A*)
 - OpenStreetMap Integration
 - PostgreSQL/PostGIS
 - Risk Prediction Engine
+
+### ✅ Day 9
+- FastAPI Backend
+- Swagger API
+- REST Endpoints
 
 
 🚧 Under Development

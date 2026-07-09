@@ -1,25 +1,19 @@
-from app.algorithms.graph import Graph
 from app.algorithms.dijkstra import shortest_path
+from app.data.city_graph import graph
+from app.data.city_graph import locations
 
 
-graph = Graph()
-
-graph.add_edge("College", "Mall", 3)
-graph.add_edge("College", "Library", 2)
-graph.add_edge("Mall", "Hospital", 4)
-graph.add_edge("Library", "Hospital", 5)
-graph.add_edge("Hospital", "Police Station", 1)
+print("\n===== Dijkstra Test =====\n")
 
 path, distance = shortest_path(
     graph,
-    "College",
-    "Police Station"
+    1,
+    5
 )
 
-print("\nShortest Path\n")
+print("Path:")
 
-print(path)
+for node in path:
+    print(locations[node].name)
 
-print("\nTotal Distance")
-
-print(distance)
+print(f"\nTotal Distance: {distance} meters")

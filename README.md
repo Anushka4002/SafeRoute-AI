@@ -69,4 +69,53 @@ This prepares the project for:
 - OpenStreetMap integration
 - Crime and weather data
 
+### ✅ Day 7
+A* Search
+Route Service
+Heuristic Functions
+Algorithm Comparison
+
+
+# Day 8 - JSON Graph Loader
+## Overview
+The road network is now loaded dynamically from a JSON dataset instead of being hardcoded in Python.
+##New Components
+- city_graph.json
+- graph_loader.py
+## Advantages
+- Decouples data from algorithms.
+- Makes the backend easier to maintain.
+- Allows replacing JSON with databases or external APIs later.
+- Keeps Dijkstra and A* independent of the data source.
+## Workflow
+city_graph.json
+↓
+GraphLoader
+↓
+Graph + Locations
+↓
+RouteService
+↓
+Algorithms (Dijkstra / A*)
+## Current Features
+- Graph Data Structure
+- BFS
+- DFS
+- Priority Queue
+- Dijkstra
+- A* Search
+- Route Service
+- JSON Data Loader
+- Object-Oriented Design
+- Unit Tests
+
+## Upcoming
+
+- FastAPI REST APIs
+- Interactive Map
+- OpenStreetMap Integration
+- PostgreSQL/PostGIS
+- Risk Prediction Engine
+
+
 🚧 Under Development

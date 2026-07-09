@@ -1,19 +1,52 @@
-from app.algorithms.graph import Graph
+from app.data.city_graph import graph
+from app.data.city_graph import locations
+
 from app.services.route_service import RouteService
 
-graph = Graph()
 
-graph.add_edge("College", "Mall", 3)
-graph.add_edge("College", "Library", 2)
-graph.add_edge("Mall", "Hospital", 4)
-graph.add_edge("Library", "Hospital", 5)
-graph.add_edge("Hospital", "Police Station", 1)
+def main():
 
-service = RouteService(graph)
+    service = RouteService(
+        graph,
+        locations
+    )
 
-route = service.get_shortest_route(
-    "College",
-    "Police Station"
-)
+    source = 1
+    destination = 5
 
-print(route)
+    print("\n========== SAFE ROUTE AI ==========\n")
+
+    print(f"Source      : {locations[source].name}")
+    print(f"Destination : {locations[destination].name}")
+
+    print("\n----- Dijkstra -----\n")
+
+    path, distance = service.shortest_route(
+        source,
+        destination
+    )
+
+    print("Path:")
+
+    for node in path:
+        print(f"→ {locations[node].name}")
+
+    print(f"\nDistance : {distance} meters")
+
+    print("\n----- A* Search -----\n")
+
+    path, distance = service.smart_route(
+        source,
+        destination
+    )
+
+    print("Path:")
+
+    for node in path:
+        print(f"→ {locations[node].name}")
+
+    print(f"\nDistance : {distance} meters")
+
+
+if __name__ == "__main__":
+    main()

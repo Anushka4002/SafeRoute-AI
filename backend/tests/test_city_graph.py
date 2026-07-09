@@ -1,4 +1,5 @@
-from app.data.city_graph import graph, locations
+from app.data.city_graph import graph
+from app.data.city_graph import locations
 
 print("\n===== Locations =====\n")
 
@@ -7,4 +8,4 @@ for location in locations.values():
 
 print("\n===== Graph =====\n")
 
-graph.display()
+print(graph)

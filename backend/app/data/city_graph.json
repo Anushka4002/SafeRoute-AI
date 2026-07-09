@@ -1,0 +1,78 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "name": "College",
+      "latitude": 28.6139,
+      "longitude": 77.2090
+    },
+    {
+      "id": 2,
+      "name": "Mall",
+      "latitude": 28.6151,
+      "longitude": 77.2132
+    },
+    {
+      "id": 3,
+      "name": "Library",
+      "latitude": 28.6168,
+      "longitude": 77.2145
+    },
+    {
+      "id": 4,
+      "name": "Hospital",
+      "latitude": 28.6180,
+      "longitude": 77.2164
+    },
+    {
+      "id": 5,
+      "name": "Police Station",
+      "latitude": 28.6201,
+      "longitude": 77.2180
+    }
+  ],
+
+  "roads": [
+
+    {
+      "source": 1,
+      "destination": 2,
+      "distance": 300,
+      "risk": 0.15,
+      "travel_time": 240
+    },
+
+    {
+      "source": 1,
+      "destination": 3,
+      "distance": 150,
+      "risk": 0.45,
+      "travel_time": 120
+    },
+
+    {
+      "source": 2,
+      "destination": 4,
+      "distance": 250,
+      "risk": 0.25,
+      "travel_time": 200
+    },
+
+    {
+      "source": 3,
+      "destination": 4,
+      "distance": 350,
+      "risk": 0.60,
+      "travel_time": 260
+    },
+
+    {
+      "source": 4,
+      "destination": 5,
+      "distance": 100,
+      "risk": 0.05,
+      "travel_time": 90
+    }
+
+  ]
+}

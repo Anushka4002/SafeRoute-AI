@@ -1,11 +1,9 @@
-from app.algorithms.astar import shortest_path
-from app.data.city_graph import graph
-from app.data.city_graph import locations
-
+from app.algorithms.astar import astar
+from app.data.city_graph import graph, locations
 
 print("\n===== A* Search Test =====\n")
 
-path, distance = shortest_path(
+path, distance = astar(
     graph,
     locations,
     1,

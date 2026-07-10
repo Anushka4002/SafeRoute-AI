@@ -2,8 +2,6 @@
 
 An AI-powered risk-aware navigation system that recommends safer travel routes by combining graph algorithms, map APIs, and machine learning.
 
-## Features (Planned)
-
 ## Features
 
 - Graph Based Navigation
@@ -42,8 +40,6 @@ SafeRoute-AI
 ├── LICENSE
 └── .gitignore
 ```
-
-## Tech Stack
 
 ## Tech Stack
 
@@ -158,6 +154,74 @@ Algorithms (Dijkstra / A*)
 - FastAPI Backend
 - Swagger API
 - REST Endpoints
+
+### ✅ Day 10
+
+#### Safest Route Algorithm
+
+Implemented a custom safest route algorithm that finds routes with the lowest accident risk instead of only the shortest distance.
+
+#### Risk Analysis
+
+Added a dedicated `RiskService` to calculate:
+
+- Total Risk
+- Average Risk
+- Safety Percentage
+- Route Safety Status (SAFE / MODERATE / DANGEROUS)
+
+#### New Backend Components
+
+Added:
+
+- `algorithms/safest_path.py`
+- `services/risk_service.py`
+
+Updated:
+
+- `models/road.py`
+- `services/route_service.py`
+- `api/routes.py`
+
+#### New API Endpoint
+
+```
+POST /route/safest
+```
+
+Example Request
+
+```json
+{
+    "source": 1,
+    "destination": 5
+}
+```
+
+#### Current Features
+
+- Graph Data Structure
+- BFS
+- DFS
+- Priority Queue
+- Dijkstra Algorithm
+- A* Search
+- Safest Route Algorithm
+- Risk Analysis
+- Route Service
+- JSON Graph Loader
+- FastAPI Backend
+- Swagger Documentation
+- REST APIs
+- Unit Tests
+
+#### Upcoming
+
+- Leaflet.js Interactive Maps
+- OpenStreetMap Integration
+- Live Route Visualization
+- PostgreSQL/PostGIS
+- Machine Learning Risk Prediction
 
 
 🚧 Under Development

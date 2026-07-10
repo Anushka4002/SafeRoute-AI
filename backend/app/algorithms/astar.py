@@ -2,7 +2,7 @@ from app.algorithms.priority_queue import PriorityQueue
 from app.algorithms.heuristics import euclidean_distance
 
 
-def shortest_path(graph, locations, start, destination):
+def astar(graph, locations, start, destination):
     """
     A* Search Algorithm
 

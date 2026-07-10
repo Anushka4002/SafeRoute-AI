@@ -1,14 +1,30 @@
-from dataclasses import dataclass
-
-
-@dataclass
 class Road:
 
-    source: int
-    destination: int
+    def __init__(
+        self,
+        source,
+        destination,
+        distance,
+        risk,
+        travel_time
+    ):
 
-    distance: float
+        self.source = source
+        self.destination = destination
 
-    risk_score: float = 0
+        self.distance = distance
+        self.risk = risk
+        self.travel_time = travel_time
 
-    travel_time: float = 0
+    def __repr__(self):
+
+        return (
+
+            f"Road("
+            f"{self.source} -> {self.destination}, "
+            f"distance={self.distance}, "
+            f"risk={self.risk}, "
+            f"time={self.travel_time}"
+            f")"
+
+        )

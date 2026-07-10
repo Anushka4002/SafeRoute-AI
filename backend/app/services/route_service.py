@@ -1,7 +1,9 @@
 from app.algorithms.dijkstra import shortest_path
 from app.algorithms.astar import astar
 from app.algorithms.safest_path import safest_path
+
 from app.services.risk_service import RiskService
+from app.services.map_service import MapService
 
 
 class RouteService:
@@ -10,11 +12,9 @@ class RouteService:
 
         self.graph = graph
         self.locations = locations
+
         self.risk_service = RiskService(graph)
-
-    def _convert_names(self, path):
-
-        return [self.locations[node].name for node in path]
+        self.map_service = MapService(locations)
 
     def get_dijkstra_route(self, source, destination):
 
@@ -24,60 +24,90 @@ class RouteService:
             destination
         )
 
-        return {
-            "algorithm": "Dijkstra",
-            "path": self._convert_names(path),
-            "distance": distance
-        }
+        risk = self.risk_service.total_risk(path)
+
+        safety = self.risk_service.safety_percentage(path)
+
+        return self.map_service.build_route_response(
+
+            "Dijkstra",
+
+            path,
+
+            distance,
+
+            risk,
+
+            safety
+
+        )
 
     def get_astar_route(self, source, destination):
 
         path, distance = astar(
+
             self.graph,
+
             self.locations,
+
             source,
+
             destination
+
         )
 
-        return {
-            "algorithm": "A*",
-            "path": self._convert_names(path),
-            "distance": distance
-        }
+        risk = self.risk_service.total_risk(path)
+
+        safety = self.risk_service.safety_percentage(path)
+
+        return self.map_service.build_route_response(
+
+            "A* Search",
+
+            path,
+
+            distance,
+
+            risk,
+
+            safety
+
+        )
 
     def get_safest_route(self, source, destination):
 
         path, cost = safest_path(
+
             self.graph,
+
             source,
+
             destination
+
         )
 
-        total_distance = 0
+        distance = 0
 
         for i in range(len(path) - 1):
 
             road = self.graph.neighbors(path[i])[path[i + 1]]
-            total_distance += road["distance"]
 
-        return {
+            distance += road["distance"]
 
-            "algorithm": "Safest Route",
+        risk = self.risk_service.total_risk(path)
 
-            "path": self._convert_names(path),
+        safety = self.risk_service.safety_percentage(path)
 
-            "distance": total_distance,
+        return self.map_service.build_route_response(
 
-            "risk_score":
-                self.risk_service.average_risk(path),
+            "Safest Route",
 
-            "safety_percentage":
-                self.risk_service.safety_percentage(path),
+            path,
 
-            "status":
-                self.risk_service.risk_status(path),
+            distance,
 
-            "cost":
-                round(cost, 2)
+            risk,
 
-        }
+            safety
+
+        )

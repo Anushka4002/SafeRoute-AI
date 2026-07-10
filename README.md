@@ -198,22 +198,38 @@ Example Request
 }
 ```
 
-#### Current Features
+### ✅ Day 11
+
+#### Coordinate & Map Services
+
+Added backend services that prepare route data for frontend map visualization.
+
+##### New Components
+
+- CoordinateService
+- MapService
+
+##### Improvements
+
+- Converts node IDs into geographic coordinates.
+- Converts node IDs into readable location names.
+- Returns structured route responses for API endpoints.
+- Prepares the backend for Leaflet/OpenStreetMap integration.
+
+##### Current Features
 
 - Graph Data Structure
 - BFS
 - DFS
-- Priority Queue
-- Dijkstra Algorithm
+- Dijkstra
 - A* Search
-- Safest Route Algorithm
-- Risk Analysis
-- Route Service
+- Safest Path
 - JSON Graph Loader
 - FastAPI Backend
-- Swagger Documentation
-- REST APIs
-- Unit Tests
+- Swagger API
+- Risk Analysis
+- Coordinate Service
+- Map Service
 
 #### Upcoming
 

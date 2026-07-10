@@ -18,17 +18,16 @@ print("\nPath:")
 for node in result["path"]:
     print(node)
 
+print("\nCoordinates:")
+
+for coordinate in result["coordinates"]:
+    print(coordinate)
+
 print("\nDistance:")
 print(result["distance"], "meters")
 
-print("\nRisk Score:")
-print(result["risk_score"])
+print("\nRisk:")
+print(result["risk"])
 
 print("\nSafety Percentage:")
 print(result["safety_percentage"], "%")
-
-print("\nStatus:")
-print(result["status"])
-
-print("\nCost:")
-print(result["cost"])

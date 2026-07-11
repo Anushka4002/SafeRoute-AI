@@ -268,5 +268,13 @@ No existing fields, function names, or endpoints were changed.
 - PostgreSQL/PostGIS
 - Machine Learning Risk Prediction
 
+## Frontend (Day 12)
+React + Leaflet map UI. Currently displays dummy location markers (matches backend `city_graph.json`).
+Backend connection happens Day 14.
+
+## Setup
+npm install
+npm run dev
+
 
 🚧 Under Development

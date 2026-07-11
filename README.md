@@ -276,5 +276,22 @@ Backend connection happens Day 14.
 npm install
 npm run dev
 
+## Frontend (Day 13)
+# SafeRoute AI — Frontend
+
+React + Leaflet map UI connected to FastAPI backend.
+
+## Features
+- Fetches real locations from `/locations`
+- Select source, destination, algorithm (Dijkstra / A* / Safest Route)
+- Draws computed route as a polyline on the map
+- Shows distance, risk, safety %, and Google Maps link
+
+## Setup
+npm install
+npm run dev
+
+Backend must be running at http://127.0.0.1:8000 (see backend/README.md)
+
 
 🚧 Under Development

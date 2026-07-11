@@ -1,4 +1,5 @@
 from app.services.coordinate_service import CoordinateService
+from app.services.osm_service import OSMService
 
 
 class MapService:
@@ -6,6 +7,7 @@ class MapService:
     def __init__(self, locations):
 
         self.coordinate_service = CoordinateService(locations)
+        self.osm_service = OSMService()
 
     def build_route_response(
 
@@ -24,7 +26,29 @@ class MapService:
 
         for coordinate in coordinates:
 
-            names.append(coordinate["name"])
+            names.append(
+
+                coordinate["name"]
+
+            )
+
+        osm_url = self.osm_service.build_osm_url(
+
+            coordinates
+
+        )
+
+        google_maps_url = self.osm_service.build_google_maps_url(
+
+            coordinates
+
+        )
+
+        route_summary = self.osm_service.build_route_summary(
+
+            coordinates
+
+        )
 
         return {
 
@@ -33,6 +57,12 @@ class MapService:
             "path": names,
 
             "coordinates": coordinates,
+
+            "route_summary": route_summary,
+
+            "osm_url": osm_url,
+
+            "google_maps_url": google_maps_url,
 
             "distance": distance,
 

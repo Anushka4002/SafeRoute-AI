@@ -231,10 +231,39 @@ Added backend services that prepare route data for frontend map visualization.
 - Coordinate Service
 - Map Service
 
+## OSM & Map Integration (Day 12)
+
+The backend now includes `OSMService` (`app/services/osm_service.py`), which generates
+map-related links and summaries for any computed route.
+
+### Features
+- `build_osm_url(coordinates)` → OpenStreetMap link centered on the start location
+- `build_google_maps_url(coordinates)` → Google Maps directions link across the full route
+- `build_route_summary(coordinates)` → Human-readable route string (e.g. `College → Library → Hospital → Police Station`)
+
+### Integration
+`MapService.build_route_response()` now returns three additional fields on top of the
+existing response shape:
+
+```json
+{
+  "algorithm": "...",
+  "path": [...],
+  "coordinates": [...],
+  "route_summary": "College → Library → Hospital → Police Station",
+  "osm_url": "https://www.openstreetmap.org/?mlat=...&mlon=...#map=15/.../...",
+  "google_maps_url": "https://www.google.com/maps/dir/...",
+  "distance": 600,
+  "risk": 1.1,
+  "safety_percentage": 63.0
+}
+```
+
+No existing fields, function names, or endpoints were changed.
+
 #### Upcoming
 
 - Leaflet.js Interactive Maps
-- OpenStreetMap Integration
 - Live Route Visualization
 - PostgreSQL/PostGIS
 - Machine Learning Risk Prediction

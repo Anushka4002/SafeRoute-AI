@@ -59,3 +59,9 @@ test_graph_loader
 test_risk
 
 test_safest
+
+## test_osm.py (Day 12)
+
+Tests `OSMService` directly using coordinates resolved via `CoordinateService`.
+
+**Run:**

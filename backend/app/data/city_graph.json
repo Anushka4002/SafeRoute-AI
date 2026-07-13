@@ -1,78 +1,25 @@
 {
   "locations": [
-    {
-      "id": 1,
-      "name": "College",
-      "latitude": 28.6139,
-      "longitude": 77.2090
-    },
-    {
-      "id": 2,
-      "name": "Mall",
-      "latitude": 28.6151,
-      "longitude": 77.2132
-    },
-    {
-      "id": 3,
-      "name": "Library",
-      "latitude": 28.6168,
-      "longitude": 77.2145
-    },
-    {
-      "id": 4,
-      "name": "Hospital",
-      "latitude": 28.6180,
-      "longitude": 77.2164
-    },
-    {
-      "id": 5,
-      "name": "Police Station",
-      "latitude": 28.6201,
-      "longitude": 77.2180
-    }
+    { "id": 1, "name": "VIT Bhopal (Kothri Kalan)", "latitude": 23.0756, "longitude": 76.8497 },
+    { "id": 2, "name": "Ratibad", "latitude": 23.1352, "longitude": 76.9235 },
+    { "id": 3, "name": "Bairagarh", "latitude": 23.2760, "longitude": 77.3350 },
+    { "id": 4, "name": "Habibganj", "latitude": 23.2270, "longitude": 77.4360 },
+    { "id": 5, "name": "New Market", "latitude": 23.2385, "longitude": 77.4008 },
+    { "id": 6, "name": "MP Nagar", "latitude": 23.2333, "longitude": 77.4360 },
+    { "id": 7, "name": "DB Mall (Arera Hills)", "latitude": 23.2306, "longitude": 77.4344 },
+    { "id": 8, "name": "Bhopal Railway Station", "latitude": 23.2680, "longitude": 77.4020 }
   ],
 
   "roads": [
-
-    {
-      "source": 1,
-      "destination": 2,
-      "distance": 300,
-      "risk": 0.15,
-      "travel_time": 240
-    },
-
-    {
-      "source": 1,
-      "destination": 3,
-      "distance": 150,
-      "risk": 0.45,
-      "travel_time": 120
-    },
-
-    {
-      "source": 2,
-      "destination": 4,
-      "distance": 250,
-      "risk": 0.25,
-      "travel_time": 200
-    },
-
-    {
-      "source": 3,
-      "destination": 4,
-      "distance": 350,
-      "risk": 0.60,
-      "travel_time": 260
-    },
-
-    {
-      "source": 4,
-      "destination": 5,
-      "distance": 100,
-      "risk": 0.05,
-      "travel_time": 90
-    }
-
+    { "source": 1, "destination": 2, "distance": 12000, "risk": 0.20, "travel_time": 600 },
+    { "source": 2, "destination": 3, "distance": 30000, "risk": 0.35, "travel_time": 1200 },
+    { "source": 3, "destination": 8, "distance": 9000, "risk": 0.40, "travel_time": 900 },
+    { "source": 3, "destination": 5, "distance": 15000, "risk": 0.25, "travel_time": 1100 },
+    { "source": 8, "destination": 5, "distance": 4000, "risk": 0.55, "travel_time": 600 },
+    { "source": 8, "destination": 4, "distance": 6000, "risk": 0.30, "travel_time": 500 },
+    { "source": 5, "destination": 7, "distance": 3500, "risk": 0.45, "travel_time": 500 },
+    { "source": 4, "destination": 6, "distance": 4000, "risk": 0.20, "travel_time": 400 },
+    { "source": 6, "destination": 7, "distance": 2500, "risk": 0.15, "travel_time": 300 },
+    { "source": 4, "destination": 7, "distance": 5500, "risk": 0.50, "travel_time": 550 }
   ]
 }

@@ -293,5 +293,27 @@ npm run dev
 
 Backend must be running at http://127.0.0.1:8000 (see backend/README.md)
 
+## Real Address Search + Bhopal Route Network (Day 15)
+
+Backend now supports searching real-world addresses instead of fixed dropdown locations.
+
+### New Services
+- `GeocodeService` (`app/services/geocode_service.py`) — converts address text to coordinates via OpenStreetMap Nominatim
+- `NearestNodeService` (`app/services/nearest_node_service.py`) — snaps geocoded coordinates to the nearest known graph node using the Haversine formula
+- `FastestPath` algorithm (`app/algorithms/fastest_path.py`) — Dijkstra variant minimizing `travel_time` instead of `distance`
+
+### New Endpoints
+- `GET /geocode?query=...` — returns address suggestions
+- `POST /route/address/{algorithm}` — accepts `{ "source": "...", "destination": "..." }`, algorithm = `dijkstra` | `astar` | `fastest` | `safest`
+
+### City Graph
+Replaced dummy Delhi locations with a real Bhopal road network (8 nodes), including VIT Bhopal and DB Mall, connected via realistic waypoints (Ratibad, Bairagarh, Habibganj, New Market, MP Nagar, Bhopal Railway Station).
+
+### Response now includes
+- `travel_time`
+- `warnings` (auto-generated safety alerts)
+- `source_matched_location`, `destination_matched_location`
+- `source_snap_distance_m`, `destination_snap_distance_m`
+
 
 🚧 Under Development

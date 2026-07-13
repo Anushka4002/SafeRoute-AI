@@ -27,6 +27,11 @@ class RouteRequest(BaseModel):
     destination: int
 
 
+class AddressRouteRequest(BaseModel):
+    source: str
+    destination: str
+
+
 @app.get("/")
 def home():
     return {
@@ -58,6 +63,20 @@ def astar(request: RouteRequest):
 @app.post("/route/safest")
 def safest(request: RouteRequest):
     return service.get_safest_route(
+        request.source,
+        request.destination
+    )
+
+
+@app.get("/geocode")
+def geocode(query: str):
+    return service.geocode_service.geocode(query)
+
+
+@app.post("/route/address/{algorithm}")
+def route_by_address(algorithm: str, request: AddressRouteRequest):
+    return service.get_route_by_address(
+        algorithm,
         request.source,
         request.destination
     )

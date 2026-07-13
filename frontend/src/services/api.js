@@ -14,3 +14,18 @@ export async function getRoute(algorithm, source, destination) {
   );
   return response.data;
 }
+
+export async function geocodeSearch(query) {
+  const response = await axios.get(`${API_BASE_URL}/geocode`, {
+    params: { query }
+  });
+  return response.data;
+}
+
+export async function getRouteByAddress(algorithm, source, destination) {
+  const response = await axios.post(
+    `${API_BASE_URL}/route/address/${algorithm}`,
+    { source, destination }
+  );
+  return response.data;
+}

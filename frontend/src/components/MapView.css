@@ -1,0 +1,283 @@
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.sidebar {
+  width: 360px;
+  background: #0f172a;
+  color: #f1f5f9;
+  padding: 24px;
+  overflow-y: auto;
+  box-shadow: 4px 0 12px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.app-title {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.app-subtitle {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 24px;
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  margin: 16px 0 6px;
+  color: #cbd5e1;
+}
+
+.address-input {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.address-input label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #cbd5e1;
+}
+
+.address-input input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #f1f5f9;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.address-input input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 20;
+  list-style: none;
+  padding: 4px;
+}
+
+.suggestions li {
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.suggestions li:hover {
+  background: #2563eb;
+}
+
+.algo-select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #f1f5f9;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.find-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.find-btn:hover {
+  background: #1d4ed8;
+}
+
+.find-btn:disabled {
+  background: #475569;
+  cursor: not-allowed;
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.result-card {
+  margin-top: 24px;
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.result-card h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #60a5fa;
+}
+
+.route-summary {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin-bottom: 16px;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.stat-box {
+  background: #0f172a;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.stat-label {
+  display: block;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.snap-note {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+.maps-link {
+  display: inline-block;
+  color: #60a5fa;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.maps-link:hover {
+  text-decoration: underline;
+}
+
+.map {
+  flex: 1;
+  height: 100%;
+}
+
+.landing {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.landing-card {
+  background: #1e293b;
+  padding: 40px;
+  border-radius: 16px;
+  width: 380px;
+  color: #f1f5f9;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+
+.route-from-to {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin: 12px 0 4px;
+}
+
+.route-from-to span {
+  color: #60a5fa;
+  margin: 0 4px;
+}
+
+.change-btn {
+  background: none;
+  border: none;
+  color: #60a5fa;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  text-decoration: underline;
+}
+
+.route-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.route-btn {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #f1f5f9;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.route-btn:hover {
+  border-color: #2563eb;
+}
+
+.route-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.loading-text {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.warnings-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+}
+
+.warnings-list li {
+  font-size: 12px;
+  color: #fbbf24;
+  margin-bottom: 6px;
+}

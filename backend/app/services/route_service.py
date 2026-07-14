@@ -7,6 +7,7 @@ from app.services.risk_service import RiskService
 from app.services.map_service import MapService
 from app.services.geocode_service import GeocodeService
 from app.services.nearest_node_service import NearestNodeService
+from app.services.ml_risk_service import MLRiskService
 
 
 class RouteService:
@@ -20,6 +21,7 @@ class RouteService:
         self.map_service = MapService(locations)
         self.geocode_service = GeocodeService()
         self.nearest_node_service = NearestNodeService(locations)
+        self.ml_risk_service = MLRiskService()
 
     def _calculate_distance(self, path):
 
@@ -141,3 +143,106 @@ class RouteService:
         result["destination_snap_distance_m"] = round(destination_distance, 1)
 
         return result
+    
+    def get_all_routes_with_conditions(
+        self,
+        source_query,
+        destination_query,
+        time_of_day="afternoon",
+        weather="clear"
+    ):
+
+        source_results = self.geocode_service.geocode(source_query)
+        destination_results = self.geocode_service.geocode(destination_query)
+
+        if not source_results or not destination_results:
+            return {"error": "Could not find one or both addresses."}
+
+        source_coord = source_results[0]
+        destination_coord = destination_results[0]
+
+        source_id, source_distance = self.nearest_node_service.find_nearest(
+            source_coord["latitude"], source_coord["longitude"]
+        )
+        destination_id, destination_distance = self.nearest_node_service.find_nearest(
+            destination_coord["latitude"], destination_coord["longitude"]
+        )
+
+        risk_multiplier = self.ml_risk_service.predict_risk_multiplier(
+            time_of_day=time_of_day,
+            weather=weather
+        )
+
+        adjusted_graph = self.graph.clone_with_adjusted_risk(risk_multiplier)
+
+        original_graph = self.graph
+        original_risk_service = self.risk_service
+
+        self.graph = adjusted_graph
+        self.risk_service = RiskService(adjusted_graph)
+
+        dijkstra_result = self.get_dijkstra_route(source_id, destination_id)
+        fastest_result = self.get_fastest_route(source_id, destination_id)
+        safest_result = self.get_safest_route(source_id, destination_id)
+
+        self.graph = original_graph
+        self.risk_service = original_risk_service
+
+        for result in (dijkstra_result, fastest_result, safest_result):
+            result["source_matched_location"] = self.locations[source_id].name
+            result["destination_matched_location"] = self.locations[destination_id].name
+
+        return {
+            "source_matched_location": self.locations[source_id].name,
+            "destination_matched_location": self.locations[destination_id].name,
+            "risk_multiplier": risk_multiplier,
+            "conditions": {
+                "time_of_day": time_of_day,
+                "weather": weather
+            },
+            "routes": {
+                "dijkstra": dijkstra_result,
+                "fastest": fastest_result,
+                "safest": safest_result
+            }
+        }
+    
+    def get_all_routes_by_address(self, source_query, destination_query):
+
+        source_results = self.geocode_service.geocode(source_query)
+        destination_results = self.geocode_service.geocode(destination_query)
+
+        if not source_results or not destination_results:
+            return {"error": "Could not find one or both addresses."}
+
+        source_coord = source_results[0]
+        destination_coord = destination_results[0]
+
+        source_id, source_distance = self.nearest_node_service.find_nearest(
+            source_coord["latitude"], source_coord["longitude"]
+        )
+        destination_id, destination_distance = self.nearest_node_service.find_nearest(
+            destination_coord["latitude"], destination_coord["longitude"]
+        )
+
+        dijkstra_result = self.get_dijkstra_route(source_id, destination_id)
+        fastest_result = self.get_fastest_route(source_id, destination_id)
+        safest_result = self.get_safest_route(source_id, destination_id)
+
+        for result in (dijkstra_result, fastest_result, safest_result):
+            result["source_matched_location"] = self.locations[source_id].name
+            result["destination_matched_location"] = self.locations[destination_id].name
+
+        return {
+            "source_matched_location": self.locations[source_id].name,
+            "destination_matched_location": self.locations[destination_id].name,
+            "source_snap_distance_m": round(source_distance, 1),
+            "destination_snap_distance_m": round(destination_distance, 1),
+            "routes": {
+                "dijkstra": dijkstra_result,
+                "fastest": fastest_result,
+                "safest": safest_result
+            }
+        }
+    
+    

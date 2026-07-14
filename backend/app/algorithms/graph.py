@@ -54,3 +54,24 @@ class Graph:
                 )
 
             print()
+
+    def clone_with_adjusted_risk(self, multiplier):
+
+        new_graph = Graph()
+
+        for source, neighbors in self.graph.items():
+
+            for destination, data in neighbors.items():
+
+                adjusted_risk = min(1.0, data["risk"] * multiplier)
+
+                new_graph.add_edge(
+                    source,
+                    destination,
+                    distance=data["distance"],
+                    risk=adjusted_risk,
+                    travel_time=data["travel_time"],
+                    bidirectional=False
+                )
+
+        return new_graph

@@ -13,7 +13,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173", "http://localhost:5174"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,6 +30,13 @@ class RouteRequest(BaseModel):
 class AddressRouteRequest(BaseModel):
     source: str
     destination: str
+
+
+class ConditionRouteRequest(BaseModel):
+    source: str
+    destination: str
+    time_of_day: str = "afternoon"
+    weather: str = "clear"
 
 
 @app.get("/")
@@ -71,6 +78,24 @@ def safest(request: RouteRequest):
 @app.get("/geocode")
 def geocode(query: str):
     return service.geocode_service.geocode(query)
+
+
+@app.post("/route/address/compare")
+def compare_routes(request: AddressRouteRequest):
+    return service.get_all_routes_by_address(
+        request.source,
+        request.destination
+    )
+
+
+@app.post("/route/address/compare-conditions")
+def compare_routes_with_conditions(request: ConditionRouteRequest):
+    return service.get_all_routes_with_conditions(
+        request.source,
+        request.destination,
+        request.time_of_day,
+        request.weather
+    )
 
 
 @app.post("/route/address/{algorithm}")

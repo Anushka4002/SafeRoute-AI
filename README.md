@@ -315,5 +315,58 @@ Replaced dummy Delhi locations with a real Bhopal road network (8 nodes), includ
 - `source_matched_location`, `destination_matched_location`
 - `source_snap_distance_m`, `destination_snap_distance_m`
 
+## Route Comparison (Day 16)
+
+New endpoint `POST /route/address/compare` computes Shortest, Fastest, and Safest
+routes in a single call and returns them together for side-by-side comparison.
+
+Response shape:
+```json
+{
+  "source_matched_location": "...",
+  "destination_matched_location": "...",
+  "routes": {
+    "dijkstra": { ... },
+    "fastest": { ... },
+    "safest": { ... }
+  }
+}
+
+## AI Risk Prediction Model (Day 17)
+
+Added a real machine learning component: a trained `RandomForestRegressor` (scikit-learn)
+predicts a **risk multiplier** based on real-world conditions, replacing static hardcoded risk.
+
+### Pipeline
+1. `app/ml/generate_dataset.py` — generates a synthetic but realistic dataset (2000 rows)
+   correlating time of day, weather, speed limit, and past incidents with a risk multiplier
+2. `app/ml/train_model.py` — trains a RandomForestRegressor pipeline (OneHotEncoder + regressor),
+   evaluates with Mean Absolute Error, saves to `app/ml/risk_model.pkl`
+3. `app/services/ml_risk_service.py` — loads the trained model and exposes
+   `predict_risk_multiplier(time_of_day, weather, speed_limit, past_incidents)`
+
+### Integration
+- `Graph.clone_with_adjusted_risk(multiplier)` — produces a temporary graph where every
+  edge's risk is scaled by the ML-predicted multiplier
+- `RouteService.get_all_routes_with_conditions(...)` — swaps in the adjusted graph,
+  computes Shortest/Fastest/Safest routes under those conditions, then restores the original
+
+### New Endpoint
+`POST /route/address/compare-conditions`
+```json
+{
+  "source": "VIT Bhopal",
+  "destination": "DB Mall Bhopal",
+  "time_of_day": "night",
+  "weather": "foggy"
+}
+```
+Returns all three routes plus the applied `risk_multiplier`.
+
+### Model Performance
+Mean Absolute Error ≈ 0.08 on held-out test data (20% split), indicating reliable
+multiplier predictions across the input feature space.
+```
+
 
 🚧 Under Development

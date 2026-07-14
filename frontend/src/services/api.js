@@ -29,3 +29,19 @@ export async function getRouteByAddress(algorithm, source, destination) {
   );
   return response.data;
 }
+
+export async function compareRoutes(source, destination) {
+  const response = await axios.post(
+    `${API_BASE_URL}/route/address/compare`,
+    { source, destination }
+  );
+  return response.data;
+}
+
+export async function compareRoutesWithConditions(source, destination, timeOfDay, weather) {
+  const response = await axios.post(
+    `${API_BASE_URL}/route/address/compare-conditions`,
+    { source, destination, time_of_day: timeOfDay, weather }
+  );
+  return response.data;
+}

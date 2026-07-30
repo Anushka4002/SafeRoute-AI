@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./MapView.css";
 
@@ -7,10 +8,50 @@ import { getLocations, compareRoutesWithConditions } from "../services/api";
 import AddressInput from "./AddressInput";
 
 const ALGORITHMS = [
-  { key: "dijkstra", label: "Shortest Route", color: "#22c55e" },
-  { key: "fastest", label: "Fastest Route", color: "#f59e0b" },
-  { key: "safest", label: "Safest Route", color: "#2563eb" }
+  { key: "fastest", label: "Fastest Route", color: "#2563eb" },
+  { key: "safest", label: "Safest Route", color: "#22c55e" }
 ];
+
+const startIcon = L.divIcon({
+  className: "",
+  html: `<div style="width:18px;height:18px;background:#22c55e;border:3px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.4)"></div>`,
+  iconSize: [18, 18],
+  iconAnchor: [9, 9]
+});
+
+const endIcon = L.divIcon({
+  className: "",
+  html: `<div style="width:18px;height:18px;background:#ef4444;border:3px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.4)"></div>`,
+  iconSize: [18, 18],
+  iconAnchor: [9, 9]
+});
+
+const waypointIcon = L.divIcon({
+  className: "",
+  html: `<div style="width:12px;height:12px;background:#2563eb;border:2px solid white;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,0.3)"></div>`,
+  iconSize: [12, 12],
+  iconAnchor: [6, 6]
+});
+
+async function fetchRoadGeometry(coordinates) {
+  const waypoints = coordinates
+    .map((c) => `${c.longitude},${c.latitude}`)
+    .join(";");
+
+  const url = `https://router.project-osrm.org/route/v1/driving/${waypoints}?overview=full&geometries=geojson`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.routes && data.routes.length > 0) {
+      return data.routes[0].geometry.coordinates.map(([lon, lat]) => [lat, lon]);
+    }
+  } catch (err) {
+    console.error("Failed to fetch road geometry", err);
+  }
+
+  return coordinates.map((c) => [c.latitude, c.longitude]);
+}
 
 function MapView() {
   const [locations, setLocations] = useState({});
@@ -20,15 +61,34 @@ function MapView() {
   const [weather, setWeather] = useState("clear");
   const [step, setStep] = useState("input");
   const [comparison, setComparison] = useState(null);
-  const [visibleRoutes, setVisibleRoutes] = useState({ dijkstra: true, fastest: true, safest: true });
+  const [roadGeometries, setRoadGeometries] = useState({});
+  const [selectedRoute, setSelectedRoute] = useState("safest");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [geometryLoading, setGeometryLoading] = useState(false);
 
   useEffect(() => {
     getLocations()
       .then((data) => setLocations(data))
       .catch(() => setError("Failed to load locations from backend."));
   }, []);
+
+  useEffect(() => {
+    if (!comparison) return;
+
+    async function loadGeometries() {
+      setGeometryLoading(true);
+      const geometries = {};
+      for (const algo of ALGORITHMS) {
+        const route = comparison.routes[algo.key];
+        geometries[algo.key] = await fetchRoadGeometry(route.coordinates);
+      }
+      setRoadGeometries(geometries);
+      setGeometryLoading(false);
+    }
+
+    loadGeometries();
+  }, [comparison]);
 
   const locationList = Object.values(locations);
 
@@ -41,6 +101,7 @@ function MapView() {
 
     setLoading(true);
     setComparison(null);
+    setRoadGeometries({});
 
     try {
       const result = await compareRoutesWithConditions(
@@ -65,11 +126,8 @@ function MapView() {
   const handleChange = () => {
     setStep("input");
     setComparison(null);
+    setRoadGeometries({});
     setError("");
-  };
-
-  const toggleRoute = (key) => {
-    setVisibleRoutes((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   if (step === "input") {
@@ -107,6 +165,9 @@ function MapView() {
     );
   }
 
+  const activeRoute = comparison.routes[selectedRoute];
+  const activeAlgo = ALGORITHMS.find((a) => a.key === selectedRoute);
+
   return (
     <div className="app-container">
       <div className="sidebar">
@@ -123,79 +184,67 @@ function MapView() {
         </p>
 
         {error && <p className="error-text">{error}</p>}
+        {geometryLoading && <p className="loading-text">Loading road paths...</p>}
 
-        <table className="compare-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Shortest</th>
-              <th>Fastest</th>
-              <th>Safest</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Distance</td>
-              <td>{comparison.routes.dijkstra.distance}m</td>
-              <td>{comparison.routes.fastest.distance}m</td>
-              <td>{comparison.routes.safest.distance}m</td>
-            </tr>
-            <tr>
-              <td>Time</td>
-              <td>{comparison.routes.dijkstra.travel_time}s</td>
-              <td>{comparison.routes.fastest.travel_time}s</td>
-              <td>{comparison.routes.safest.travel_time}s</td>
-            </tr>
-            <tr>
-              <td>Risk</td>
-              <td>{comparison.routes.dijkstra.risk}</td>
-              <td>{comparison.routes.fastest.risk}</td>
-              <td>{comparison.routes.safest.risk}</td>
-            </tr>
-            <tr>
-              <td>Safety %</td>
-              <td>{comparison.routes.dijkstra.safety_percentage}%</td>
-              <td>{comparison.routes.fastest.safety_percentage}%</td>
-              <td>{comparison.routes.safest.safety_percentage}%</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div className="route-toggles">
+        <div className="route-buttons">
           {ALGORITHMS.map((algo) => (
-            <label key={algo.key} className="toggle-row">
-              <input
-                type="checkbox"
-                checked={visibleRoutes[algo.key]}
-                onChange={() => toggleRoute(algo.key)}
-              />
-              <span className="color-dot" style={{ background: algo.color }}></span>
+            <button
+              key={algo.key}
+              className={"route-btn" + (selectedRoute === algo.key ? " active" : "")}
+              style={selectedRoute === algo.key
+                ? { borderColor: algo.color, background: algo.color, color: "white" }
+                : { borderColor: algo.color, color: algo.color }
+              }
+              onClick={() => setSelectedRoute(algo.key)}
+            >
+              <span className="route-btn-dot" style={{ background: algo.color }}></span>
               {algo.label}
-            </label>
+            </button>
           ))}
         </div>
 
-        {ALGORITHMS.map((algo) => {
-          const route = comparison.routes[algo.key];
-          if (!route.warnings || route.warnings.length === 0) return null;
-          return (
-            <div key={algo.key} className="warning-block">
-              <p className="warning-title" style={{ color: algo.color }}>{algo.label} warnings:</p>
-              <ul className="warnings-list">
-                {route.warnings.map((w, idx) => <li key={idx}>⚠️ {w}</li>)}
-              </ul>
-            </div>
-          );
-        })}
+        {activeRoute && (
+          <div className="result-card">
+            <h3 style={{ color: activeAlgo.color }}>{activeRoute.algorithm}</h3>
+            <p className="route-summary">{activeRoute.route_summary}</p>
 
-        <a
-          className="maps-link"
-          href={comparison.routes.safest.google_maps_url}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Open Safest Route in Google Maps
-        </a>
+            <div className="stat-grid">
+              <div className="stat-box">
+                <span className="stat-value">{activeRoute.distance}m</span>
+                <span className="stat-label">Distance</span>
+              </div>
+              <div className="stat-box">
+                <span className="stat-value">{activeRoute.travel_time}s</span>
+                <span className="stat-label">Time</span>
+              </div>
+              <div className="stat-box">
+                <span className="stat-value">{activeRoute.risk}</span>
+                <span className="stat-label">Risk</span>
+              </div>
+              <div className="stat-box">
+                <span className="stat-value">{activeRoute.safety_percentage}%</span>
+                <span className="stat-label">Safety</span>
+              </div>
+            </div>
+
+            {activeRoute.warnings && activeRoute.warnings.length > 0 && (
+              <ul className="warnings-list">
+                {activeRoute.warnings.map((w, idx) => (
+                  <li key={idx}>⚠️ {w}</li>
+                ))}
+              </ul>
+            )}
+
+            <a
+              className="maps-link"
+              href={activeRoute.google_maps_url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open in Google Maps
+            </a>
+          </div>
+        )}
       </div>
 
       <MapContainer center={[23.25, 77.40]} zoom={11} className="map">
@@ -204,23 +253,40 @@ function MapView() {
           attribution="&copy; OpenStreetMap contributors"
         />
 
-        {locationList.map((loc) => (
-          <Marker key={loc.id} position={[loc.latitude, loc.longitude]}>
-            <Popup>{loc.name}</Popup>
-          </Marker>
-        ))}
+        {locationList.map((loc) => {
+          const isStart = activeRoute &&
+            activeRoute.path[0] === loc.name;
+          const isEnd = activeRoute &&
+            activeRoute.path[activeRoute.path.length - 1] === loc.name;
+
+          const icon = isStart ? startIcon : isEnd ? endIcon : waypointIcon;
+
+          return (
+            <Marker
+              key={loc.id}
+              position={[loc.latitude, loc.longitude]}
+              icon={icon}
+            >
+              <Popup>
+                <b>{loc.name}</b>
+                {isStart && <span> 🟢 Start</span>}
+                {isEnd && <span> 🔴 End</span>}
+              </Popup>
+            </Marker>
+          );
+        })}
 
         {ALGORITHMS.map((algo) => {
-          if (!visibleRoutes[algo.key]) return null;
-          const route = comparison.routes[algo.key];
-          const positions = route.coordinates.map((c) => [c.latitude, c.longitude]);
+          if (algo.key !== selectedRoute) return null;
+          const positions = roadGeometries[algo.key];
+          if (!positions) return null;
           return (
             <Polyline
               key={algo.key}
               positions={positions}
               color={algo.color}
-              weight={5}
-              opacity={0.8}
+              weight={6}
+              opacity={0.9}
             />
           );
         })}
